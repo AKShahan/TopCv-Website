@@ -1138,13 +1138,13 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:4rem 5% 
       <div class="contact-form-box reveal d2">
         <h3 style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:1.5rem">Send Us a Message</h3>
         <div class="form-row">
-          <div class="fg"><label>First Name</label><input type="text" placeholder="Amal"></div>
-          <div class="fg"><label>Last Name</label><input type="text" placeholder="Perera"></div>
+          <div class="fg"><label>First Name</label><input id="contact-first" type="text" placeholder="Amal"></div>
+          <div class="fg"><label>Last Name</label><input id="contact-last" type="text" placeholder="Perera"></div>
         </div>
-        <div class="fg"><label>Email Address</label><input type="email" placeholder="amal@email.com"></div>
-        <div class="fg"><label>Phone / WhatsApp</label><input type="tel" placeholder="+94 77 XXX XXXX"></div>
+        <div class="fg"><label>Email Address</label><input id="contact-email" type="email" placeholder="amal@email.com"></div>
+        <div class="fg"><label>Phone / WhatsApp</label><input id="contact-phone" type="tel" placeholder="+94 77 XXX XXXX"></div>
         <div class="fg"><label>Service You're Interested In</label>
-          <select>
+          <select id="contact-service">
             <option value="">Select a service...</option>
             <option>Basic — CV Writing (LKR 1,200)</option>
             <option>Professional+ — CV + LinkedIn + Cover Letter (LKR 2,500–4,000)</option>
@@ -1155,8 +1155,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:4rem 5% 
             <option>Not sure — need guidance</option>
           </select>
         </div>
-        <div class="fg"><label>Tell Us About Your Goals</label><textarea placeholder="Share your current situation and what you're hoping to achieve. The more detail, the better we can help you..."></textarea></div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem" onclick="showToast('✅ Message sent! We\'ll be in touch within 24 hours.')"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+        <div class="fg"><label>Tell Us About Your Goals</label><textarea id="contact-goals" placeholder="Share your current situation and what you're hoping to achieve. The more detail, the better we can help you..."></textarea></div>
+        <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem" onclick="sendContactWhatsApp()"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
       </div>
     </div>
   </section>
@@ -1283,6 +1283,30 @@ function showToast(msg){
   const t=document.getElementById('toast'),m=document.getElementById('toastMsg');
   m.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ── CONTACT FORM WHATSAPP REDIRECT ──
+function sendContactWhatsApp(){
+  const first=document.getElementById('contact-first').value.trim();
+  const last=document.getElementById('contact-last').value.trim();
+  const email=document.getElementById('contact-email').value.trim();
+  const phone=document.getElementById('contact-phone').value.trim();
+  const service=document.getElementById('contact-service').value.trim();
+  const goals=document.getElementById('contact-goals').value.trim();
+  const name=[first,last].filter(Boolean).join(' ')||'Not provided';
+  const msg=[
+    'Hello TopCV,',
+    'I am contacting you through the website contact form.',
+    '',
+    `Name: ${name}`,
+    `Email: ${email||'Not provided'}`,
+    `Phone/WhatsApp: ${phone||'Not provided'}`,
+    `Service Interested In: ${service||'Not provided'}`,
+    'Goals:',
+    `${goals||'Not provided'}`
+  ].join('\n');
+  const url='https://wa.me/94756074615?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
 }
 
 // ── FAQ ──

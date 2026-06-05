@@ -1234,15 +1234,15 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:4rem 5% 
       <div><div class="sec-label" style="margin-bottom:.3rem"><i class="fa-regular fa-calendar-check"></i> Free Consultation</div><h3 style="font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800">Book Your Free 15-Min Call</h3></div>
       <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div class="fg"><label>Your Full Name</label><input type="text" placeholder="Amal Perera"></div>
-    <div class="fg"><label>Phone / WhatsApp Number</label><input type="tel" placeholder="+94 77 XXX XXXX"></div>
+    <div class="fg"><label>Your Full Name</label><input id="modal-name" type="text" placeholder="Amal Perera"></div>
+    <div class="fg"><label>Phone / WhatsApp Number</label><input id="modal-phone" type="tel" placeholder="+94 77 XXX XXXX"></div>
     <div class="fg"><label>Preferred Call Time</label>
-      <select><option>Morning (9AM–12PM)</option><option>Afternoon (12PM–4PM)</option><option>Evening (4PM–8PM)</option></select>
+      <select id="modal-time"><option>Morning (9AM–12PM)</option><option>Afternoon (12PM–4PM)</option><option>Evening (4PM–8PM)</option></select>
     </div>
     <div class="fg"><label>Your Main Goal</label>
-      <select><option>Land my first job</option><option>Career change</option><option>Get more interview calls</option><option>Improve my LinkedIn presence</option><option>Build a personal brand</option><option>Not sure — need guidance</option></select>
+      <select id="modal-goal"><option>Land my first job</option><option>Career change</option><option>Get more interview calls</option><option>Improve my LinkedIn presence</option><option>Build a personal brand</option><option>Not sure — need guidance</option></select>
     </div>
-    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="showToast('🎉 Booking confirmed! We\'ll call you shortly.');closeModal()"><i class="fa-regular fa-calendar-check"></i> Confirm Booking</button>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="sendBookingWhatsApp()"><i class="fa-regular fa-calendar-check"></i> Confirm Booking</button>
   </div>
 </div>
 
@@ -1307,6 +1307,26 @@ function sendContactWhatsApp(){
   ].join('\n');
   const url='https://wa.me/94756074615?text='+encodeURIComponent(msg);
   window.open(url,'_blank');
+}
+
+function sendBookingWhatsApp(){
+  const name=document.getElementById('modal-name').value.trim()||'Not provided';
+  const phone=document.getElementById('modal-phone').value.trim()||'Not provided';
+  const time=document.getElementById('modal-time').value.trim()||'Not provided';
+  const goal=document.getElementById('modal-goal').value.trim()||'Not provided';
+  const msg=[
+    'Hello TopCV,',
+    'I would like to book a free consultation call.',
+    '',
+    `Name: ${name}`,
+    `Phone/WhatsApp: ${phone}`,
+    `Preferred Call Time: ${time}`,
+    `Main Goal: ${goal}`
+  ].join('\n');
+  const url='https://wa.me/94756074615?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+  closeModal();
+  showToast('Opening WhatsApp so you can confirm your booking.');
 }
 
 // ── FAQ ──
